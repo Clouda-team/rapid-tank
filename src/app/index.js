@@ -44,8 +44,8 @@ addons.forEach(function (json) {
             });
         }
     }
-    if (json.services) { // {'text':'/index.html'}
-        obj.services = json.services;
+    if (json.links) { // {'text':'/index.html'}
+        obj.links = json.links;
     }
 });
 

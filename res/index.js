@@ -59,8 +59,8 @@
                 each(obj.context && obj.context.addons, function (name, addon) {
                     enabled[name] = true;
                     addonHTML += '<p><b>' + name + '</b>';
-                    each(addon.services, function (label, service) {
-                        addonHTML += '<a href="/addons/' + name + service.path + '#id=' + obj.id + '" target="_blank">' + label + '</a>';
+                    each(addon.links, function (label, link) {
+                        addonHTML += '<a href="/addons/' + name + link.path + '#id=' + obj.id + '" target="_blank">' + label + '</a>';
                     });
 
                     each(addons[name] && addons[name].started, function (label, action) {
@@ -90,7 +90,6 @@
                     '<p><span>uptime</span>' + diffTime(obj.uptime, now) + '</p>' +
                     '<p><span><a href="/logs?id=' + obj.id + '" target="_blank">logs</a></span>'
                     + '<a href="/stop?id=' + obj.id + '">stop</a>'
-                    + '<a href="/reload?id=' + obj.id + '">reload</a>'
                     + '<a href="/restart?id=' + obj.id + '">restart</a></p>' +
                     '<p><span>addons</span></p>' + addonHTML + '</li>';
             }).join('');

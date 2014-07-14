@@ -1,0 +1,82 @@
+h1, h2, p {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    background-color: #efefef;
+    font-family: 'Monaco', 'Consolas', 'Microsoft YaHei';
+}
+
+.header {
+    padding: 10px;
+    background: #FFF;
+    height: 62px;
+    border-bottom: 1px solid #dadada;
+    box-shadow: 1px 2px 2px #e6e6e6;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.list > * {
+    background: #FFF;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px #cacaca;
+    border-radius: 0.5rem;
+}
+
+.list > * h1 {
+    font: bold 18px/1.6em '';
+}
+
+.list > * h2 {
+    font: bold 16px/1.6em '';
+}
+
+.list > * p {
+    font: normal 14px/1.8em '';
+    color: #444;
+}
+
+.list > * p span {
+    display: inline-block;
+    width: 6em;
+    font-weight: bold;
+}
+
+.list > * p b {
+    display: inline-block;
+    width: 12em;
+    color: #04A03C;
+}.list > * p b.disabled {
+     color: #9ea09f;
+ }
+
+.list > * p a {
+    color: #35B8B8;
+    display: inline-block;
+    margin-right: 12px;
+}
+
+#notify {
+    font-size: 16px;
+    line-height: 2.8em;
+    padding: 0 1em;
+    position: absolute;
+    border: 1px solid #ddd;
+    color: #FFF;
+    background: #181818;
+}
+
+#notify.hidden {
+    display: none;
+}
+
+#notify.err {
+    background: #801818;
+}

@@ -1,0 +1,33 @@
+{
+    "name": "tankjs",
+    "version": "0.1.0",
+    "description": "nodejs development/testing/deployment util",
+    "keywords": [
+        "process manager",
+        "test"
+    ],
+    "main": "tank.js",
+    "bin": {
+        "tank": "tank.js"
+    },
+    "dependencies": {
+        "tankjs-cluster": "0.1.0",
+        "tankjs-watchdog": "0.1.0"
+    },
+    "config": {
+        "watchdog": {
+            "path": "/tmp/clouda-tankjs.wdt.sock",
+            "timeout": 5000
+        },
+        "control": {
+            "port": 8018,
+            "auth": {
+                "realm": "tankjs control panel"
+            }
+        },
+        "stdout": "/tmp/clouda-tankjs.out.log",
+        "stderr": "/tmp/clouda-tankjs.err.log"
+    },
+    "author": "kyriosli",
+    "repository": "https://github.com/Clouda-team/tankjs.git"
+}

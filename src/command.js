@@ -3,7 +3,6 @@ exports['start'] = {
     action: function (appinfo, env) {
         var relapath = appinfo.id || appinfo.pid;
         if (relapath) {
-            process.chdir(appinfo.path); // appinfo.path is original path.
             // try to treat pid|id as path
             var fs = require('fs');
             if (fs.existsSync(relapath)) {
@@ -114,6 +113,18 @@ exports['-sd'] = {
     alias: 'start-daemon'
 };
 
+exports['test'] = {
+    desc: "runs test suits",
+    action: function (appinfo, env) {
+        if (appinfo.id || appinfo.pid) {
+            fatal('test command does not accept id|pid');
+        }
+        env.tankjs_addons = 'tankjs-test' + (env.tankjs_addons ? ',' + env.tankjs_addons : '');
+        require('./spawnChild')([__dirname + '/app/index.js', appinfo.path], {
+            stdio: 'inherit'
+        });
+    }
+};
 
 function request(method, path, data, cb, onErr) {
     var param = {

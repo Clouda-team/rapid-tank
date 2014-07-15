@@ -25,6 +25,10 @@ TANK: nodejs开发与部署工具
   
         tank help
   
+  * 运行单元测试
+  
+        tank test
+  
 特性
 ---
 

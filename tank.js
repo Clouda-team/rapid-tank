@@ -45,6 +45,7 @@ process.chdir(__dirname);
 
 // scan for all addons
 initAddons();
+process.chdir(appinfo.path);
 
 // check for all arguments
 parseArgs();

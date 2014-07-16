@@ -1,5 +1,7 @@
 var config = require('../../package.json').config;
 
+process.chdir(__dirname + '../..');
+
 var fs = require('fs');
 
 var stdout = fs.createWriteStream(config.stdout, {flags: 'a'}),

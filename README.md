@@ -1,34 +1,35 @@
 TANK: nodejs开发与部署工具
 ===
 
+TANK 是一个集应用开发、测试、部署、监控为一体的
+
 安装
 ---
 
-    npm install tankjs -g
+```sh
+$ sudo npm install tankjs -g
+```
 
 使用
 ---
 
-  * 启动应用：
+使用方式：
 
-        tank start app.js
+```sh
+$ tank <command> path|pid|id  [args]
+```
 
-  * 查看应用列表：
-  
-        tank list
+command为命令名称，path为启动/重启模块路径，如`/home/www/service/start.js`，pid为已启动的应用主进程pid，如`29314`，id为已启动/停止的应
+用分配的id（自动分配或手动指定），如`app0`。args为不同命令所接受的参数
 
-  * 停止/热重启/冷重启应用：
-  
-        tank stop|reload|restart app.js|pid|id
+支持的命令有：
 
-  * 获取帮助：
-  
-        tank help
-  
-  * 运行单元测试
-  
-        tank test
-  
+  - start:
+  根据指定的path启动应用。start会尝试连接守护进程并发送启动应用的参数。如果守护进程未启动，则尝试启动。
+  start接受的参数有：
+    - -
+
+
 特性
 ---
 

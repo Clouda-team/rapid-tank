@@ -1,8 +1,8 @@
-console.log('[app] spawned with args', process.argv);
+//console.log('[app] spawned with args', process.argv);
 
 // scan for all addons loaded
 var addons = process.env.tankjs_addons.split(',').map(function (name) {
-    var ret = require(name + '/package.json'), path = require.resolve(name + '/package.json');
+    var ret = require(name + '/package.json');
     ret.priority |= 0;
     ret.name = name;
     return ret;

@@ -1,6 +1,12 @@
 exports['start'] = {
     desc: "starts app by path. (Tries to start daemon if not started)",
-    action: function (appinfo, env) {
+    args: {
+        '--id': {
+            demo: '{app0}',
+            desc: 'specify app id'
+        }
+    },
+    action: function (appinfo, env, args) {
         var relapath = appinfo.id || appinfo.pid;
         if (relapath) {
             // try to treat pid|id as path
@@ -11,6 +17,7 @@ exports['start'] = {
                 fatal('app path not found: `' + relapath + '` (start command does not accept pid|id)');
             }
         }
+        return console.log(args);
 
         checkDaemon(function () {
             appinfo.env = env;
@@ -46,15 +53,19 @@ exports['restart'] = {
 
 exports['list'] = {
     desc: "list active apps",
+    args: {'-v': {
+        desc: 'show verbose information',
+        bind_env: 'list_verbose'
+    }},
     action: function () {
         request('GET', '/list', null, function (tres) {
             var buf = [];
             tres.on('data', buf.push.bind(buf)).on('end', function () {
                 var apps = JSON.parse(Buffer.concat(buf));
-                console.error('List of active apps:\n' + Object.keys(apps).map(function (path) {
-                    var app = apps[path];
-                    return '\n\x1b[42m' + app.id + '\x1b[0m\t* * * * * * * * * * * * * * * * * * * * *' +
-                        '\n   \x1b[32mpath\x1b[0m: ' + path +
+                console.error('List of active apps:\n' + Object.keys(apps).map(function (id) {
+                    var app = apps[id];
+                    return '\n\x1b[42m' + id + '\x1b[0m\t* * * * * * * * * * * * * * * * * * * * *' +
+                        '\n   \x1b[32mpath\x1b[0m: ' + app.path +
                         '\n    \x1b[32mpid\x1b[0m: ' + app.pid +
                         '\n  \x1b[32matime\x1b[0m: ' + new Date(app.atime).toLocaleString() +
                         '\n \x1b[32muptime\x1b[0m: ' + new Date(app.uptime).toLocaleString()
@@ -104,6 +115,18 @@ exports['-kd'] = {
 
 exports['start-daemon'] = {
     desc: "starts daemon",
+    args: {
+        '-u': {
+            demo: '{username}',
+            desc: 'set control panel username(default: admin)',
+            bind_env: 'ctrl_uname'
+        },
+        '-p': {
+            demo: '{password}',
+            desc: 'set control panel password(default: random generated)',
+            bind_env: 'ctrl_pwd'
+        }
+    },
     action: function () {
         checkDaemon(Boolean, true);
     }
@@ -175,3 +198,5 @@ function sendCmd(cmd, appinfo) {
         });
     });
 }
+
+require('util')._extend(exports.start.args, exports['start-daemon'].args);

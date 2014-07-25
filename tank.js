@@ -39,7 +39,7 @@ if (commands[cmd].alias) {
 var appinfo = {path: process.cwd()},
     cmdinfo = commands[cmd],
     addons = {},
-    env = process.env;
+    env = process.env, args = {};
 
 process.chdir(__dirname);
 
@@ -55,33 +55,13 @@ if (addons.length) {
     env.tankjs_addons = addons.join(',');
 }
 // run command!
-commands[cmd].action(appinfo, env);
+commands[cmd].action(appinfo, env, args);
 
 
 // BEGIN method definition
 
 
 function initAddons() {
-    commands.list.args = {'-v': {
-        desc: 'show verbose information',
-        bind_env: 'list_verbose'
-    }};
-
-
-    var tmp = commands['start-daemon'].args = {
-        '-u': {
-            demo: '{username}',
-            desc: 'set control panel username(default: admin)',
-            bind_env: 'ctrl_uname'
-        },
-        '-p': {
-            demo: '{password}',
-            desc: 'set control panel password(default: random generated)',
-            bind_env: 'ctrl_pwd'
-        }
-    };
-
-
     var fs = require('fs');
 // check modules from parent directory as well as node_modules
     fs.readdirSync('..').forEach(function (name) {
@@ -93,9 +73,6 @@ function initAddons() {
             checkName('./node_modules', name);
         });
     }
-
-
-    require('util')._extend(commands.start.args, tmp);
 
     function checkName(prefix, name) {
 //        console.log('check', prefix, name);
@@ -155,7 +132,7 @@ function parseArgs() {
                 name = argi.substr(2);
                 value = true;
             } else {
-                name = argi.substr(2, idx);
+                name = argi.substring(2, idx);
                 value = argi.substr(idx + 1);
                 argi = argi.substr(0, idx);
             }
@@ -180,6 +157,7 @@ function parseArgs() {
                 env[arg.bind_env] = value;
 //                console.log('set env', arg.bind_env, value);
             }
+            args[name] = value;
         }
     }
 }

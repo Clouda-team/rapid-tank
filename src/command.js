@@ -1,11 +1,5 @@
 exports['start'] = {
     desc: "starts app by path. (Tries to start daemon if not started)",
-    args: {
-        '--id': {
-            demo: '{app0}',
-            desc: 'specify app id'
-        }
-    },
     action: function (appinfo, env, args) {
         var relapath = appinfo.id || appinfo.pid;
         if (relapath) {
@@ -17,10 +11,10 @@ exports['start'] = {
                 fatal('app path not found: `' + relapath + '` (start command does not accept pid|id)');
             }
         }
-        return console.log(args);
 
         checkDaemon(function () {
             appinfo.env = env;
+            appinfo.id = args.id;
             info('starting app ' + appinfo.path);
             sendCmd('start', appinfo);
         });
@@ -53,11 +47,7 @@ exports['restart'] = {
 
 exports['list'] = {
     desc: "list active apps",
-    args: {'-v': {
-        desc: 'show verbose information',
-        bind_env: 'list_verbose'
-    }},
-    action: function () {
+    action: function (appinfo, env, args) {
         request('GET', '/list', null, function (tres) {
             var buf = [];
             tres.on('data', buf.push.bind(buf)).on('end', function () {
@@ -92,7 +82,7 @@ exports['args'] = {
                     label += label[1] === '-' ? '=' + arg.demo : arg.demo;
                 }
 
-                return str + '\n  ' + label + (label.length > 5 ? '\t' : '\t\t') + arg.desc;
+                return str + '\n  ' + label + (label.length > 5 ? label.length > 13 ? '\n\t\t' : '\t' : '\t\t') + arg.desc;
             }, str + '\n\n\x1b[32;1m' + cmd + (cmd.length > 7 ? '\t' : '\t\t')
                 + '\x1b[30;1m' + exports[cmd].desc + '\x1b[0m');
         }, '\x1b[32mcommands and their args:'));
@@ -199,4 +189,4 @@ function sendCmd(cmd, appinfo) {
     });
 }
 
-require('util')._extend(exports.start.args, exports['start-daemon'].args);
+require('util')._extend(exports.start.args = {}, exports['start-daemon'].args);

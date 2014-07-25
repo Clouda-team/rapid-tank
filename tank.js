@@ -17,6 +17,9 @@ global.fatal = function (msg) {
     throw 'exiting';
 };
 process.on('uncaughtException', function (e) {
+    if (typeof e !== 'string') {
+        process.stderr.write(e.stack || e.message);
+    }
     process.stderr.on('drain', function () {
         process.exit(1);
     });
@@ -167,7 +170,7 @@ function help() {
             var obj = commands[cmd];
             return str + '\n  \x1b[32;1m' + cmd + (cmd.length > 5 ? '\t\x1b[0m' : '\t\t\x1b[0m') +
 
-                (obj.alias ? 'alias of ' + obj.alias : obj.desc);
+                (obj.alias ? 'alias of \x1b[32m' + obj.alias + '\x1b[0m' : obj.desc);
         },
             '\x1b[32mUsage: \x1b[34;1m' + process.env._ + '\x1b[0m <command> \x1b[30;1mpath|pid|#id\x1b[0m  [args]\n' +
             'Available commands are:'));

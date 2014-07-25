@@ -59,6 +59,8 @@ restart接受的参数有：`-j` `--cov` `--cov_all` `--watch`，具体说明参
 
 启动守护进程。接受`-u` 和 `-p` 参数
 
+####-sd: `start-daemon`的别名
+
 ####test
 
 执行单元测试。必须安装`tankjs-test`后此命令方能生效。如果未指定path，或指定的path为目录，tankjs会尝试从当前目录或指定的目录中寻找test

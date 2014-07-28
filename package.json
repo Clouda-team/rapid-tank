@@ -1,18 +1,19 @@
 {
     "name": "tankjs",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "nodejs development/testing/deployment util",
     "keywords": [
         "process manager",
-        "test"
+        "test",
+        "coverage"
     ],
     "main": "tank.js",
     "bin": {
         "tank": "tank.js"
     },
     "dependencies": {
-        "tankjs-cluster": "0.1.0",
-        "tankjs-watchdog": "0.1.0"
+        "tankjs-cluster": "1.0.0",
+        "tankjs-watchdog": "1.0.0"
     },
     "config": {
         "watchdog": {

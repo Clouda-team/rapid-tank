@@ -112,4 +112,4 @@ test命令支持`--cov`和`--cov_all`参数。除此之外test还支持以下参
 官网
 ---
 
-访问 [clouda+官网](http://cloudap.duapp.com/)获得更多信息
+访问 [clouda+官网](http://cloudaplus.duapp.com/)获得更多信息

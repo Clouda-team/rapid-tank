@@ -70,7 +70,7 @@ restart接受的参数有：`-j` `--cov` `--cov_all` `--watch`，具体说明参
 test命令支持`--cov`和`--cov_all`参数。除此之外test还支持以下参数：
 
   - --timeout={n} 指定单测的超时时间，单位为ms。如：`--timeout=1000`。默认：600ms
-  - --report={port} 指定监听端口以输出测试结果。`tankjs-coverage`等需要浏览器访问的扩展可以通过该端口实现。如：`--report=8080`。
+  - --report={port} 指定监听端口以输出测试结果。`tankjs-coverage`等需要浏览器访问的扩展可以通过该端口实现。如：`--report=8080`。默认：随机分配
 
 扩展的页面以`http://host:port/extension-name/path`形式访问，其中host为运行单测的机器地址，port为指定的端口，extension-name为扩展
 名称，path为扩展的文件或接口地址。如：`http://localhost:8080/tankjs-coverage/report.html`

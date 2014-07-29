@@ -132,7 +132,9 @@ exports['test'] = {
         if (appinfo.id || appinfo.pid) {
             fatal('test command does not accept id|pid');
         }
-        env.tankjs_addons = 'tankjs-test' + (env.tankjs_addons ? ',' + env.tankjs_addons : '');
+        if (!env.tankjs_addons || env.tankjs_addons.indexOf('tankjs-test') === -1) {
+            env.tankjs_addons = env.tankjs_addons ? 'tankjs-test,' + env.tankjs_addons : 'tankjs-test'
+        }
         require('./spawnChild')([__dirname + '/app/index.js', appinfo.path], {
             stdio: 'inherit'
         });

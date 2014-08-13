@@ -45,11 +45,8 @@ var appinfo = {path: process.cwd()},
     addons = {},
     env = process.env, args = {};
 
-process.chdir(__dirname);
-
 // scan for all addons
 initAddons();
-process.chdir(appinfo.path);
 
 // check for all arguments
 parseArgs();
@@ -64,25 +61,11 @@ commands[cmd].action(appinfo, env, args);
 
 // BEGIN method definition
 
-
 function initAddons() {
-    var fs = require('fs');
-// check modules from parent directory as well as node_modules
-    fs.readdirSync('..').forEach(function (name) {
-        checkName('..', name);
-    });
-
-    if (fs.existsSync('node_modules')) {
-        fs.readdirSync('node_modules').forEach(function (name) {
-            checkName('./node_modules', name);
-        });
-    }
-
-    function checkName(prefix, name) {
+    require('./src/scan')(function (dir, name) {
 //        console.log('check', prefix, name);
-        if (!/^rapid-\w+$/.test(name))
-            return;
-        var arr = require(prefix + '/' + name + '/package.json').args;
+
+        var arr = require(dir + '/' + name + '/package.json').args;
         if (!arr)
             return;
         Object.keys(arr).forEach(function (label) {
@@ -100,7 +83,8 @@ function initAddons() {
                 }
             }
         });
-    }
+    });
+
 }
 
 

@@ -54,6 +54,7 @@ exports['list'] = {
                 var apps = JSON.parse(Buffer.concat(buf));
                 console.error('List of active apps:\n' + Object.keys(apps).map(function (id) {
                     var app = apps[id];
+                    if (!app)return;
                     return '\n\x1b[42m' + id + '\x1b[0m\t* * * * * * * * * * * * * * * * * * * * *' +
                         '\n   \x1b[32mpath\x1b[0m: ' + app.path +
                         '\n    \x1b[32mpid\x1b[0m: ' + app.pid +
@@ -171,7 +172,7 @@ function checkDaemon(cb) {
         }
     }, function () {
         info('daemon not started, spawning...');
-        require('./spawnChild')([__dirname + '/daemon/'],
+        require('./spawnChild')([__dirname + '/../required/rapid-watchdog/'],
             {detached: true, stdio: 'inherit'}).unref();
         setTimeout(cb, 500);
     });

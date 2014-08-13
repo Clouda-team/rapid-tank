@@ -1,0 +1,21 @@
+{
+    "name": "rapid-tester",
+    "master": "master.js",
+    "args": {
+        "--timeout": {
+            "demo": "{n}",
+            "desc": "sets test timeout in ms(default: 600ms)",
+            "commands": ["test"],
+            "bind_env": "TEST_TIMEOUT"
+        },
+        "--report": {
+            "demo": "{port}",
+            "desc": "listen to port for other extensions to report their status(default: random)",
+            "commands": ["test"],
+            "bind_env": "TEST_REPORT"
+        }
+    },
+    "startup": true,
+    "author": "kyriosli",
+    "priority": 100
+}

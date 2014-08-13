@@ -1,0 +1,15 @@
+{
+    "name": "rapid-watchdog",
+    "master": "master.js",
+    "args": {
+        "--watch": {
+            "demo": "{n}",
+            "desc": "set watchdog timeout in seconds(default: 5s)",
+            "commands": ["start", "restart"],
+            "defaults": "5",
+            "bind_env": "WATCHDOG_INTERVAL"
+        }
+    },
+    "priority": 0,
+    "author": "kyriosli"
+}

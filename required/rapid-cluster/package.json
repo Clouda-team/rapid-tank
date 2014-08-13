@@ -1,0 +1,29 @@
+{
+    "name": "rapid-cluster",
+    "main": "worker.js",
+    "master": "master.js",
+    "args": {
+        "-j": {
+            "demo": "{n}",
+            "desc": "set initial workers count(default: 4)",
+            "commands": ["start", "restart"],
+            "defaults": "4",
+            "bind_env": "cluster_forks"
+        }
+    },
+    "links": {
+        "view flows": {
+            "path": "/report.html"
+        }
+    },
+    "actions": {
+        "started": {
+            "reload": "/reload",
+            "workers++": "/inc_workers",
+            "workers--": "/dec_workers"
+        }
+    },
+    "startup": true,
+    "priority": 0,
+    "author": "kyriosli"
+}

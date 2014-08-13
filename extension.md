@@ -1,7 +1,7 @@
 扩展机制
 ---
 
-Tank 将自动识别当前module的安装目录及其子模块目录中前缀为`tankjs-`的模块，并从其`package.json`中加载扩展信息。
+Tank 将自动识别当前module的安装目录及其子模块目录中前缀为`rapid-`的模块，并从其`package.json`中加载扩展信息。
 
 Tank将识别扩展的`package.json`中包含的以下字段：
 
@@ -60,12 +60,12 @@ tank支持通过参数进行扩展的定制。对tank的所有命令：start sto
         }
     }
 
-最终链接地址形如： /addons/tankjs-cluster/report.html#id=app0
+最终链接地址形如： /addons/rapid-cluster/report.html#id=app0
 
 任何以`\.\w+$`结尾的请求地址将被当作静态文件，而其它接口将被当作数据请求转发给扩展。为了配合数据展示，扩展必须提供对应的HTTP服务接口。
 
 通过在master部分代码中指定exports.requestHandler，当扩展的web界面发布请求时（请求地址前缀必须与静态文件相同，且包含id参数，
-如`/addons/tankjs-cluster/flows?id=app0`），请求将被转发至reequestHandler接口。
+如`/addons/rapid-cluster/flows?id=app0`），请求将被转发至reequestHandler接口。
 
 requestHandler接受两个参数：req和res，其中req的地址被改写成形如`/flows`的短链接。接口形如：
 

@@ -132,8 +132,8 @@ exports['test'] = {
         if (appinfo.id || appinfo.pid) {
             fatal('test command does not accept id|pid');
         }
-        if (!env.tankjs_addons || env.tankjs_addons.indexOf('tankjs-test') === -1) {
-            env.tankjs_addons = env.tankjs_addons ? 'tankjs-test,' + env.tankjs_addons : 'tankjs-test'
+        if (!env.tankjs_addons || env.tankjs_addons.indexOf('rapid-tester') === -1) {
+            env.tankjs_addons = env.tankjs_addons ? 'rapid-tester,' + env.tankjs_addons : 'rapid-tester'
         }
         require('./spawnChild')([__dirname + '/app/index.js', appinfo.path], {
             stdio: 'inherit'

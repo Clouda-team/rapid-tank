@@ -1,6 +1,6 @@
 {
-    "name": "tankjs",
-    "version": "1.0.0",
+    "name": "rapid-tank",
+    "version": "0.1.0",
     "description": "nodejs development/testing/deployment util",
     "keywords": [
         "process manager",
@@ -9,15 +9,11 @@
     ],
     "main": "tank.js",
     "bin": {
-        "tank": "tank.js"
-    },
-    "dependencies": {
-        "tankjs-cluster": "1.0.0",
-        "tankjs-watchdog": "1.0.0"
+        "rapid": "tank.js"
     },
     "config": {
         "watchdog": {
-            "path": "/tmp/clouda-tankjs.wdt.sock",
+            "path": "/tmp/cloudap-rapid.wdt.sock",
             "timeout": 5000
         },
         "control": {
@@ -26,9 +22,9 @@
                 "realm": "tankjs control panel"
             }
         },
-        "stdout": "/tmp/clouda-tankjs.out.log",
-        "stderr": "/tmp/clouda-tankjs.err.log"
+        "stdout": "/tmp/cloudap-rapid.out.log",
+        "stderr": "/tmp/cloudap-rapid.err.log"
     },
     "author": "kyriosli",
-    "repository": "https://github.com/Clouda-team/tankjs.git"
+    "repository": "https://github.com/Clouda-team/rapid-tank.git"
 }

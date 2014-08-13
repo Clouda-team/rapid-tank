@@ -19,10 +19,11 @@ global.fatal = function (msg) {
 process.on('uncaughtException', function (e) {
     if (typeof e !== 'string') {
         process.stderr.write(e.stack || e.message);
+    } else {
+        process.stderr.on('drain', function () {
+            process.exit(1);
+        });
     }
-    process.stderr.on('drain', function () {
-        process.exit(1);
-    });
 });
 
 var commands = require('./src/command'),
@@ -79,7 +80,7 @@ function initAddons() {
 
     function checkName(prefix, name) {
 //        console.log('check', prefix, name);
-        if (!/^tankjs-\w+$/.test(name))
+        if (!/^rapid-\w+$/.test(name))
             return;
         var arr = require(prefix + '/' + name + '/package.json').args;
         if (!arr)

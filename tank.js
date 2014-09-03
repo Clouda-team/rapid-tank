@@ -55,6 +55,7 @@ addons = Object.keys(addons);
 if (addons.length) {
     env.tankjs_addons = addons.join(',');
 }
+
 // run command!
 commands[cmd].action(appinfo, env, args);
 
@@ -102,7 +103,10 @@ function parseArgs() {
                 } else if (!fs.existsSync(argi)) {
                     fatal('app path not found: `' + argi + '`');
                 } else {
-                    appinfo = {path: fs.realpathSync(argi)};
+                    appinfo = {
+                        cwd: process.cwd(),
+                        path: fs.realpathSync(argi)
+                    };
                 }
                 foundAppInfo = true;
             } else {

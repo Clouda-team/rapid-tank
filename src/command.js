@@ -55,7 +55,7 @@ exports['list'] = {
                 console.error('List of active apps:\n' + Object.keys(apps).map(function (id) {
                     var app = apps[id];
                     if (!app)return;
-                    return '\n\x1b[42m' + id + '\x1b[0m\t* * * * * * * * * * * * * * * * * * * * *' +
+                    return '\n\x1b[42mapp' + id + '\x1b[0m\t* * * * * * * * * * * * * * * * * * * * *' +
                         '\n   \x1b[32mpath\x1b[0m: ' + app.path +
                         '\n    \x1b[32mpid\x1b[0m: ' + app.pid +
                         '\n  \x1b[32matime\x1b[0m: ' + new Date(app.atime).toLocaleString() +
@@ -136,7 +136,7 @@ exports['test'] = {
         if (!env.tankjs_addons || env.tankjs_addons.indexOf('rapid-tester') === -1) {
             env.tankjs_addons = env.tankjs_addons ? 'rapid-tester,' + env.tankjs_addons : 'rapid-tester'
         }
-        require('./spawnChild')([__dirname + '/app/index.js', appinfo.path], {
+        require('./spawnChild')([__dirname + '/../app/index.js', appinfo.path], {
             stdio: 'inherit'
         });
     }

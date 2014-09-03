@@ -5,7 +5,7 @@ var addons = process.env.tankjs_addons.split(',').map(function (name) {
     var ret, prefix;
     try {
         prefix = '../required/';
-        require.resolve(prefix + name);
+        require.resolve(prefix + name + '/package.json');
     } catch (e) {
         prefix = '';
     }

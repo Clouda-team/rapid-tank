@@ -15,7 +15,7 @@ exports.startWatchdog = function (config, stdout, stderr) {
         pids = {},// {pid:app}
         paths = {}; // {path:app}
 
-    exports.start = function (path, env) {
+    exports.start = function (path, env, cwd) {
         if (typeof path !== 'string') {
             throw {message: 'path is required'};
         }
@@ -30,6 +30,7 @@ exports.startWatchdog = function (config, stdout, stderr) {
             id: 'app' + id,
             atime: 0,
             pid: 0,
+            cwd: cwd,
             path: path,
             env: env,
             uptime: Date.now()
@@ -124,7 +125,7 @@ exports.startWatchdog = function (config, stdout, stderr) {
                      * {"path":"/path/to/app","env":{}}
                      */
                     case 'POST/start':
-                        exports.start(posts.path, posts.env);
+                        exports.start(posts.path, posts.env, posts.cwd);
                         res.end('starting ' + posts.path);
                         break;
                     case 'POST/stop':
@@ -210,7 +211,7 @@ exports.startWatchdog = function (config, stdout, stderr) {
     var appPath = fs.realpathSync(__dirname + '/../../app');
 
     function spawn(obj) {
-        console.log('spawning app ' + obj.path);
+        console.log('spawning app ' + obj.id);
         var env = obj.env;
         if (unixsock) {
             env.WATCHDOG_PATH = unixsock;
@@ -222,6 +223,7 @@ exports.startWatchdog = function (config, stdout, stderr) {
 
         try {
             var child = spawnChild(process.execPath, [appPath, obj.path], {
+                cwd: obj.cwd,
                 detached: true,
                 stdio: ['ignore', stdout, stderr],
                 env: env

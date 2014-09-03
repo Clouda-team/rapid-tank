@@ -5,7 +5,7 @@ var context = global.context,
         path: '/keepalive'
     },
     data = {path: process.argv[2], pid: process.pid, context: context},
-    data2 = {path: data.path, pid: process.pid, context: context, env: process.env, uptime: Date.now()};
+    data2 = {path: data.path, pid: process.pid, context: context, cwd: process.cwd(), env: process.env, uptime: Date.now()};
 if (process.env.WATCHDOG_PATH) {
     param.socketPath = process.env.WATCHDOG_PATH;
 } else {

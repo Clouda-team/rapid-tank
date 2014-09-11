@@ -97,7 +97,16 @@ function parseArgs() {
         if (argi[0] !== '-') { // appinfo
             if (!foundAppInfo) {
                 var fs = require('fs');
-                if (/^\d+$/.test(argi)) { // pid
+                if (cmd === 'add') {
+                    if (/^\w+$/.test(argi)) {
+                        argi = 'rapid-' + argi;
+                    } else if (!/^rapid-\w+$/.test(argi)) {
+                        fatal('bad module name');
+                    }
+                    appinfo = {
+                        modules: [argi]
+                    };
+                } else if (/^\d+$/.test(argi)) { // pid
                     appinfo.pid = +argi;
                 } else if (/^app\w+$/.test(argi)) { // id
                     appinfo.id = argi;
@@ -111,7 +120,16 @@ function parseArgs() {
                 }
                 foundAppInfo = true;
             } else {
-                warn('ingoring unknown argument: `' + argi + '`');
+                if (cmd === 'add') {
+                    if (/^\w+$/.test(argi)) {
+                        argi = 'rapid-' + argi;
+                    } else if (!/^rapid-\w+$/.test(argi)) {
+                        fatal('bad module name');
+                    }
+                    appinfo.modules.push(argi);
+                } else {
+                    warn('ingoring unknown argument: `' + argi + '`');
+                }
             }
             continue;
         }

@@ -176,6 +176,23 @@ exports['init'] = {
     }
 };
 
+exports['add'] = {
+    desc: 'adds app dependencies',
+    args: {
+        '-g': {desc: 'installs globally'}
+    },
+    action: function (appinfo, env, args) {
+        var cmd = 'npm install ' + appinfo.modules.join(' ');
+        if (args.g) {
+            cmd += ' -g';
+        } else {
+            cmd += ' --save';
+        }
+        require('child_process').exec(cmd);
+    }
+};
+
+
 exports['list'] = {
     desc: "list active apps",
     action: function (appinfo, env, args) {

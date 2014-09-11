@@ -45,6 +45,137 @@ exports['restart'] = {
     }
 };
 
+exports['init'] = {
+    desc: 'creates an empty project',
+    noExt: true,
+    action: function () {
+        var fs = require('fs'), stdout = process.stdout;
+        process.stdin.resume();
+        process.stdin.on('data', function callee(buf) {
+            var str = buf.toString().trim() || defaults;
+            var keys = [, 'name', 'version', 'description', 'main'];
+            switch (state) {
+                case 0:
+                    if (str.toLowerCase() === 'y') {
+                        state = 1;
+                    } else {
+                        process.stdin.pause();
+                        stdout.write('Abort');
+                        return;
+                    }
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                    data[keys[state]] = str;
+                    state++;
+                    break;
+                case 4:
+                    if (str.toLowerCase() === 'y') {
+                        data.dependencies['rapid-access'] = '*';
+                    }
+                    state = 5;
+                    break;
+                case 5:
+                    if (str.toLowerCase() === 'y') {
+                        this.removeListener('data', callee);
+                        return done();
+                    } else {
+                        state = 1;
+                    }
+                    break;
+            }
+            showHint();
+
+        });
+        var state = 1, data = {}, defaults;
+        if (fs.existsSync('package.json')) {
+            state = 0;
+            data = require(process.cwd() + '/package.json');
+        }
+        showHint();
+        function showHint() {
+            var str;
+            switch (state) {
+                case 0:
+                    str = 'Current folder doesn\'t seem empty, proceed? (y/N) ';
+                    defaults = 'N';
+                    break;
+                case 1:
+                    str = buildHint('Name', data.name || process.cwd().match(/([^\/\\]+)$/)[1]);
+                    break;
+                case 2:
+                    str = buildHint('Version', data.version || '0.0.0');
+                    break;
+                case 3:
+                    str = buildHint('Description', data.description || '');
+                    break;
+                case 4:
+                    data.main = 'start.js';
+                    data.scripts = data.scripts || {};
+                    data.scripts.test = 'rapid test';
+                    data.dependencies = data.dependencies || {};
+                    data.dependencies['rapid-core'] = '*';
+                    data.dependencies['rapid-httpserver'] = '*';
+
+                    str = 'Need rapid-access installed? (Y/n) ';
+                    defaults = 'Y';
+                    break;
+                case 5:
+                    str = JSON.stringify(data, null, 4) + '\nIs this OK? (Y/n) ';
+                    break;
+            }
+            stdout.write(str);
+            function buildHint(label, val) {
+                defaults = val;
+                return label + ' (' + val + '): ';
+            }
+        }
+
+        function done() {
+            process.stdin.pause();
+            var tplPath = fs.realpathSync(__dirname + '/../res/tpl') + '/';
+
+            mkdirp('test');
+            cp('test.js', 'test/');
+
+            mkdirp('conf');
+            cp('http.conf.js', 'conf/');
+
+            if (data.dependencies['rapid-access'])
+                cp('access.js', 'conf/');
+
+            mkdirp('src/action');
+            cp('index.js', 'src/action/');
+
+            fs.writeFileSync('package.json', JSON.stringify(data, null, 4));
+            fs.writeFileSync(
+                'start.js',
+                fs.readFileSync(tplPath + '/start.js').toString()
+                    .replace('$_requires_$', 'require("' + Object.keys(data.dependencies).filter(function (str) {
+                        return str.substr(0, 6) === 'rapid-';
+                    }).join('");\r\nrequire("') + '")')
+            );
+            stdout.write('Installing dependencies');
+            require('child_process').exec('npm install');
+            function mkdirp(name) {
+                if (!fs.existsSync(name)) {
+                    var idx = name.indexOf('/');
+                    if (~idx) {
+                        mkdirp(name.substr(0, idx));
+                    }
+                    fs.mkdirSync(name);
+                }
+            }
+
+            function cp(name, path) {
+                if (!fs.existsSync(path + name))
+                    fs.writeFileSync(path + name, fs.readFileSync(tplPath + name));
+            }
+        }
+    }
+};
+
 exports['list'] = {
     desc: "list active apps",
     action: function (appinfo, env, args) {
@@ -139,6 +270,21 @@ exports['test'] = {
         require('./spawnChild')([__dirname + '/../app/index.js', appinfo.path], {
             stdio: 'inherit'
         });
+    }
+};
+
+exports['help'] = {
+    desc: 'Show help message',
+    noExt: true,
+    action: function () {
+        console.error(Object.keys(exports).reduce(function (str, cmd) {
+                var obj = exports[cmd];
+                return str + '\n  \x1b[32;1m' + cmd + (cmd.length > 5 ? '\t\x1b[0m' : '\t\t\x1b[0m') +
+
+                    (obj.alias ? 'alias of \x1b[32m' + obj.alias + '\x1b[0m' : obj.desc);
+            },
+                '\x1b[32mUsage: \x1b[34;1m' + process.env._ + '\x1b[0m <command> \x1b[30;1mpath|pid|#id\x1b[0m  [args]\n' +
+                'Available commands are:'));
     }
 };
 

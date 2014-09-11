@@ -74,16 +74,14 @@ exports.startWatchdog = function (config, stdout, stderr) {
                 paths[req.path];
 
         if (appinfo) {
-            var env = req.env || appinfo.env;
-            apps[+appinfo.id.substr(3)] = null;
-            delete pids[appinfo.pid];
-            delete paths[appinfo.path];
             console.log('watchdog.stop(' + appinfo.id + ')');
             sendSignal(appinfo.pid, 'KILL', function (err) {
                 if (err) {
                     cb(err);
                 } else {
-                    exports.start(appinfo.path, env);
+                    appinfo.uptime = Date.now();
+                    appinfo.atime = 0;
+                    spawn(appinfo);
                     cb(null, 'app started');
                 }
             });

@@ -34,6 +34,11 @@ body {
     font: bold 18px/1.6em '';
 }
 
+.list > * h1 span {
+    font-size: 0.6em;
+    color: #AAA;
+}
+
 .list > * h2 {
     font: bold 16px/1.6em '';
 }
@@ -53,9 +58,11 @@ body {
     display: inline-block;
     width: 12em;
     color: #04A03C;
-}.list > * p b.disabled {
-     color: #9ea09f;
- }
+}
+
+.list > * p b.disabled {
+    color: #9ea09f;
+}
 
 .list > * p a {
     color: #35B8B8;
@@ -79,4 +86,12 @@ body {
 
 #notify.err {
     background: #801818;
+}
+
+#controls {
+    float: right;
+}
+
+#stat {
+    font-size: 12px;
 }

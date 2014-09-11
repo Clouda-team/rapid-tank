@@ -26,6 +26,9 @@ command为命令名称，path为启动/重启模块路径，如`/home/www/servic
 
 支持的命令有：
 
+####init:
+生成应用基础目录(`package.json` `start.js`等)
+
 ####start:
 根据指定的path启动应用。start会尝试连接守护进程并发送启动应用的参数。如果守护进程未启动，则尝试启动。如：
 ```sh

@@ -1,6 +1,7 @@
 exports.startControl = function (config) {
     var watchdog = require('./watchdog'),
         fs = require('fs'),
+        os = require('os'),
         info = {apps: watchdog.apps, addons: {}}, addonPrefix = {};
 
     // scan for all modules
@@ -37,6 +38,15 @@ exports.startControl = function (config) {
             } else if (/\.\w+$/.test(url)) { // sends file
                 sendFile(url, req, res);
             } else if (url === '/info') {
+                info.stat = {
+                    name: os.platform() + ' ' + os.hostname() + ' ' + os.arch(),
+                    load: os.loadavg(),
+                    mem: {
+                        total: os.totalmem(),
+                        free: os.freemem()
+                    }
+                };
+
                 var ret = new Buffer(JSON.stringify(info));
                 res.writeHead(200, {
                     'Content-Type': mimeTypes.json,

@@ -83,7 +83,7 @@
                 });
 
 
-                return '<li><h1>' + obj.path + '</h1>' +
+                return '<li><h1>' + obj.id + ' <span>(' + obj.path + ')</span></h1>' +
                     '<p><span>pid</span>' + obj.pid + '</p>' +
                     '<p><span>workers</span>' + (obj.context ? obj.context.forks | 0 : '(pending)') + '</p>' +
                     '<p><span>atime</span>' + diffTime(obj.atime, now) + '</p>' +
@@ -93,9 +93,19 @@
                     + '<a href="/restart?id=' + obj.id + '">restart</a></p>' +
                     '<p><span>addons</span></p>' + addonHTML + '</li>';
             }).join('');
+            var stat = info.stat;
+            document.getElementById('stat').innerHTML =
+                '<p>Hostname : ' + stat.name + '</p><p>&nbsp;LoadAvg : 1min: ' + percent(stat.load[0]) + '%, 5min: ' +
+                percent(stat.load[1]) + '%, 15min: ' + percent(stat.load[2]) + '%</p><p>&nbsp; Memory : ' +
+                percent(stat.mem.free / stat.mem.total) + '% free (' + (stat.mem.free >> 20) + '/' +
+                (stat.mem.total >> 20) + 'MB)</p>';
         });
         xhr.send();
     }
+
+    function percent(num) {
+        return ~~(num * 1000) / 10
+    };
 
     function diffTime(time, now) {
         var diff = now - time;

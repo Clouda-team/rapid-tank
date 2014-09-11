@@ -1,6 +1,6 @@
 {
     "name": "rapid-tank",
-    "version": "0.1.2",
+    "version": "0.1.4",
     "description": "nodejs development/testing/deployment util",
     "keywords": [
         "process manager",

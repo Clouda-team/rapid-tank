@@ -29,15 +29,16 @@ process.on('uncaughtException', function (e) {
 var commands = require('./src/command'),
     cmd = process.argv[2] || 'help';
 
-if (cmd === 'help') {
-    return help();
-}
 if (!commands[cmd]) {
     console.error('Unrecognized command: ' + cmd);
-    return help();
+    return commands.help.action();
 }
 if (commands[cmd].alias) {
     cmd = commands[cmd].alias;
+}
+
+if (commands[cmd].noExt) {
+    return commands[cmd].action();
 }
 
 var appinfo = {path: process.cwd()},
@@ -152,15 +153,4 @@ function parseArgs() {
             args[name] = value;
         }
     }
-}
-
-function help() {
-    console.error(Object.keys(commands).reduce(function (str, cmd) {
-            var obj = commands[cmd];
-            return str + '\n  \x1b[32;1m' + cmd + (cmd.length > 5 ? '\t\x1b[0m' : '\t\t\x1b[0m') +
-
-                (obj.alias ? 'alias of \x1b[32m' + obj.alias + '\x1b[0m' : obj.desc);
-        },
-            '\x1b[32mUsage: \x1b[34;1m' + process.env._ + '\x1b[0m <command> \x1b[30;1mpath|pid|#id\x1b[0m  [args]\n' +
-            'Available commands are:'));
 }
